@@ -1,49 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
+
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-// type Props = {};
-// 5e6af0
-const Header = () => {
-  const [value, setValue] = useState('');
+import { availableOptions } from '../data';
 
-  const options = [
-    'Product Require Document',
-    'System Designs',
-    // 'Code',
-    // 'Test',
-    'Api Specification',
-    'Competitive analysis',
-    // 'Catch Pharases',
-    // 'color theme suggestions',
-    // 'Social media name',
-    // 'Sequence Diagram',
-    // 'User Interface',
-  ];
+type Props = {
+  description: string;
+  setDescription: React.Dispatch<React.SetStateAction<string>>;
+  options: Array<string>;
+  setOptions: React.Dispatch<React.SetStateAction<Array<string>>>;
+};
 
-  const [data, setData] = useState({
-    description: '',
-    options: [],
-  });
-
-  const handleTextChange = (e: any) => {
-    setData({ ...data, description: e.target.value });
-  };
-
+const Header = ({
+  description,
+  setDescription,
+  options,
+  setOptions,
+}: Props) => {
   const handleCheckboxChange = (option: string) => {
-    setData((prevData: string[]) => {
-      if (prevData.options.includes(option)) {
-        return {
-          ...prevData,
-          options: prevData.options.filter(
-            (selectedOption) => selectedOption !== option
-          ),
-        };
+    setOptions((options: string[]) => {
+      if (options.includes(option)) {
+        return options.filter((existingOption) => existingOption !== option);
       } else {
-        return {
-          ...prevData,
-          options: [...prevData.options, option],
-        };
+        return [...options, option];
       }
     });
   };
@@ -55,26 +35,23 @@ const Header = () => {
         <p className="my-3 text-[#d8d8d8]">
           <i>Simplify your product research processs...</i>
         </p>
-        {/* <textarea
-          className="p-3 w-full rounded-md focus:border-none focus:outline-none text-[#c4c4c4] h-[40vh] bg-[#193040] mt-4"
-          placeholder="Give a detailed explanation of your product"
-          onChange={(e) => handleTextChange(e)}
-          resize="none"
-        /> */}
         <ReactQuill
           theme="snow"
-          value={value}
-          onChange={setValue}
-          className="p-3 w-full rounded-md text-[#c4c4c4] h-[40vh] bg-[#193040] mt-4"
+          value={description}
+          onChange={setDescription}
+          placeholder="Enter product details"
+          className="w-full rounded-md text-[#c4c4c4] h-[40vh]"
         />
-        <h3 className="font-bold mt-3">Select preferred option</h3>
-        <div className="my-2">
-          {options.map((i, option) => (
-            <div key={option} className="flex gap-2 items-center">
+        <h3 className="font-bold mt-[50px]">
+          Select preferred option ({`${options.length}/8`})
+        </h3>
+        <div className="my-2 grid grid-cols-2 gap-3 h-[150px] overflow-y-scroll">
+          {availableOptions.map((i, option) => (
+            <div key={option} className="flex gap-2 items-center text-xs mb-2">
               <input
                 type="checkbox"
                 name={i}
-                checked={data.options.includes(i)}
+                checked={options.includes(i)}
                 onChange={() => handleCheckboxChange(i)}
               />
               {i}
