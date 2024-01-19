@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 
 function App() {
-  const [options, setOptions] = useState([]);
-  const [description, setDescription] = useState('');
+  const [options, setOptions] = useState<string[]>([]);
+  const [description, setDescription] = useState<string>('');
 
   return (
     <div className="flex">
